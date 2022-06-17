@@ -1,4 +1,6 @@
 import app from "./app";
-app.listen(4000);
+import "./database/connection";
 
-console.log("server on port", 4000);
+app.listen(app.get("port"));
+
+console.log("server on port", app.get("port"));
