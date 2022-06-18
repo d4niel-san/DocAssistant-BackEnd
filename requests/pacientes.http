@@ -9,7 +9,7 @@ Content-Type: application/json
 {
     "paciente": 
 {
-    "firstName": "Alfredo",
+    "firstName": "",
     "lastName": "Sorete",
     "email": "alsorete@gilmail.com",
     "dni": 95874651,
