@@ -7,12 +7,14 @@ POST {{api}}
 Content-Type: application/json 
 
 {
-    "paciente": 
+    "pacient": 
 {
-    "firstName": "",
-    "lastName": "Sorete",
-    "email": "alsorete@gilmail.com",
-    "dni": 95874651,
-    "cell": 1124589658
+    "firstName": "Rodrigo",
+    "lastName": "Diaz",
+    "email": "alsdte@gilmail.com",
+    "dni": "55555355",
+    "cell": "1132459658"
 }
 }
+###
+GET {{api}}/1
