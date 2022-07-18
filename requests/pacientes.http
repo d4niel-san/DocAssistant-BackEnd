@@ -10,11 +10,18 @@ Content-Type: application/json
     "pacient": 
 {
     "firstName": "Rodrigo",
-    "lastName": "Diaz",
+    "lastName": "Diaz", 
     "email": "alsdte@gilmail.com",
     "dni": "55555355",
     "cell": "1132459658"
 }
 }
 ###
-GET {{api}}/1
+POST http://localhost:4000/getPaciente
+Content-Type: application/json 
+
+
+{ "filter": "lastName", "data": "Ipsum" }
+###
+{ "filter": "cell", "data": "1123456789" }
+{ "filter": "dni", "data": "12345678" }

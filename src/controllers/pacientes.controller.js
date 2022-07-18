@@ -6,6 +6,15 @@ export const getPacientes = async (req, res) => {
   res.json(result.recordset);
 };
 
+export const getPaciente = async (req, res) => { 
+  const { filter, data } = req.body;
+  const pool = await getConection();
+  const query = queries.getPatientBy + filter + " = '" + data + "'";
+  console.log(query);
+  const result = await pool.request().query(query);
+  res.send(result.recordset);
+};
+
 export const addPacient = async (req, res) => {
   const { firstName, lastName, email, dni, cell } = req.body;
   const validateReturn = validatePacient(req.body);
@@ -21,8 +30,8 @@ export const addPacient = async (req, res) => {
       .input("email", sql.VarChar, email)
       .input("dni", sql.Numeric, dni)
       .input("cell", sql.Numeric, cell)
-      .query(queries.insertPacient)
-      .finally(res.send(true));
+      .query(queries.insertPacient);
+    return res.send(true);
   } catch (error) {
     res.status(500);
     res.send(error.message);
@@ -30,7 +39,6 @@ export const addPacient = async (req, res) => {
 };
 
 export const validatePacient = (pacient) => {
-  console.log(pacient);
   const { body, validationResult } = require("express-validator");
   if (
     !pacient.firstName ||
