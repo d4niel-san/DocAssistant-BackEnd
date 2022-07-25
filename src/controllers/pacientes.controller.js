@@ -6,7 +6,7 @@ export const getPacientes = async (req, res) => {
   res.json(result.recordset);
 };
 
-export const getPaciente = async (req, res) => { 
+export const getPaciente = async (req, res) => {
   const { filter, data } = req.body;
   const pool = await getConection();
   const query = queries.getPatientBy + filter + " = '" + data + "'";
@@ -16,8 +16,9 @@ export const getPaciente = async (req, res) => {
 };
 
 export const addPacient = async (req, res) => {
-  const { firstName, lastName, email, dni, cell } = req.body;
+  const { firstName, lastName, email, dni, cell, ocupacion } = req.body;
   const validateReturn = validatePacient(req.body);
+  console.log(ocupacion);
   if (validateReturn != true) {
     return res.status(400).json({ msg: { validateReturn } });
   }
@@ -27,6 +28,7 @@ export const addPacient = async (req, res) => {
       .request()
       .input("firstName", sql.VarChar, firstName)
       .input("lastName", sql.VarChar, lastName)
+      .input("ocupacion", sql.VarChar, ocupacion)
       .input("email", sql.VarChar, email)
       .input("dni", sql.Numeric, dni)
       .input("cell", sql.Numeric, cell)
