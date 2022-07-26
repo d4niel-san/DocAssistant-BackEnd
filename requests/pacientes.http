@@ -21,7 +21,12 @@ POST http://localhost:4000/getPaciente
 Content-Type: application/json 
 
 
-{ "filter": "lastName", "data": "Ipsum" }
+{ "filter": "lastName", "data": "Mermoz" }
 ###
 { "filter": "cell", "data": "1123456789" }
 { "filter": "dni", "data": "12345678" }
+###
+POST http://localhost:4000/consultasPaciente
+Content-Type: application/json 
+
+{"patientId": 15}

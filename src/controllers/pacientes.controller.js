@@ -10,10 +10,17 @@ export const getPaciente = async (req, res) => {
   const { filter, data } = req.body;
   const pool = await getConection();
   const query = queries.getPatientBy + filter + " = '" + data + "'";
-  console.log(query);
   const result = await pool.request().query(query);
-  res.send(result.recordset);
+  const consultas = await getConsultasById(result.recordset[0].Id);
+  res.send({ ...result.recordset[0], consultas });
 };
+
+async function getConsultasById(patientId) {
+  const pool = await getConection();
+  const query = queries.getConsultaById + "'" + patientId + "'";
+  const result = await pool.request().query(query);
+  return result.recordset;
+}
 
 export const addPacient = async (req, res) => {
   const { firstName, lastName, email, dni, cell, ocupacion } = req.body;
