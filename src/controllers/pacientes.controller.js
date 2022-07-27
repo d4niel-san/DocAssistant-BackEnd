@@ -11,9 +11,41 @@ export const getPaciente = async (req, res) => {
   const pool = await getConection();
   const query = queries.getPatientBy + filter + " = '" + data + "'";
   const result = await pool.request().query(query);
-  const consultas = await getConsultasById(result.recordset[0].Id);
+  let consultas = await getConsultasById(result.recordset[0].Id);
+
+  /*consultas.forEach((element) => {
+    element.date = obtenerFecha(element.date);
+  });
+*/
+  console.log(consultas);
+  obtenerFecha(consultas[0].date);
   res.send({ ...result.recordset[0], consultas });
 };
+
+function obtenerFecha(fecha) {
+  console.log("fecha: ", fecha.toString()); //consultas[0].date);
+  const date = new Date(fecha);
+  console.log("date: ", date.toString()); //consultas[0].date);
+  let [month, day, year] = [
+    date.getMonth() + 1,
+    date.getDate(),
+    date.getFullYear(),
+  ];
+  let [hour, minutes, seconds] = [
+    date.getHours() - date.getTimezoneOffset() / 60, //el ofset devuelve la diferencia en minutos
+    date.getMinutes(),
+    date.getSeconds(),
+  ];
+  if (hour < 10) hour = "0" + hour;
+  if (minutes < 10) minutes = "0" + minutes;
+  if (month < 10) month = "0" + month;
+  //console.log(day + "/" + month + "/" + year);
+  //console.log(hour + ":" + minutes);
+  const convertedDate =
+    day + "/" + month + "/" + year + " - " + hour + ":" + minutes;
+  console.log(convertedDate);
+  return convertedDate;
+}
 
 async function getConsultasById(patientId) {
   const pool = await getConection();
