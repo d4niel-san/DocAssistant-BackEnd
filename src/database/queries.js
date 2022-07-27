@@ -5,6 +5,6 @@ export const queries = {
   getPatientBy: "SELECT * FROM Pacientes WHERE ",
 
   insertConsulta:
-    "INSERT INTO consultas (patientId, date, payed, register) VALUES (15, CURRENT_TIMESTAMP, 0, 'Esto es una pruebaaaa')",
+    "INSERT INTO consultas (patientId, date, payed, register) VALUES (15, select convert(varchar, current_timestamp, 113), 0, 'Esto es una pruebaaaa')",
   getConsultaById: "SELECT * FROM Consultas WHERE patientId=",
 };
