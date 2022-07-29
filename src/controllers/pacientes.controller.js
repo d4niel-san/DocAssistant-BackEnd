@@ -11,39 +11,50 @@ export const getPaciente = async (req, res) => {
   const pool = await getConection();
   const query = queries.getPatientBy + filter + " = '" + data + "'";
   const result = await pool.request().query(query);
-  let consultas = await getConsultasById(result.recordset[0].Id);
+  const consultas = await getConsultasById(result.recordset[0].Id);
 
-  /*consultas.forEach((element) => {
+  console.log("Los resultados devueltos son: ", consultas);
+  consultas.forEach((element) => {
     element.date = obtenerFecha(element.date);
   });
-*/
-  console.log(consultas);
-  obtenerFecha(consultas[0].date);
   res.send({ ...result.recordset[0], consultas });
 };
 
-function obtenerFecha(fecha) {
-  console.log("fecha: ", fecha.toString()); //consultas[0].date);
+/* function filtrarConsultas(consultas) {
+  let consultasFiltradas = [];
+
+  consultas.forEach((element) => {
+    if (!element.payed) {
+      consultasFiltradas.push(element);
+      consultas.splice(consultas.indexOf(element), 1); //unshift de consultas
+    }
+  });
+
+  for (let i = consultas.length; i >= 0; i--) {
+    if (consultasFiltradas.length < 4 && consultas[i])
+      consultasFiltradas.unshift(consultas[i]);
+  }
+
+  return consultasFiltradas;
+} */
+
+export function obtenerFecha(fecha) {
   const date = new Date(fecha);
-  console.log("date: ", date.toString()); //consultas[0].date);
   let [month, day, year] = [
     date.getMonth() + 1,
     date.getDate(),
     date.getFullYear(),
   ];
   let [hour, minutes, seconds] = [
-    date.getHours() - date.getTimezoneOffset() / 60, //el ofset devuelve la diferencia en minutos
+    date.getHours() + date.getTimezoneOffset() / 60, //el ofset devuelve la diferencia en minutos
     date.getMinutes(),
     date.getSeconds(),
   ];
   if (hour < 10) hour = "0" + hour;
   if (minutes < 10) minutes = "0" + minutes;
   if (month < 10) month = "0" + month;
-  //console.log(day + "/" + month + "/" + year);
-  //console.log(hour + ":" + minutes);
   const convertedDate =
     day + "/" + month + "/" + year + " - " + hour + ":" + minutes;
-  console.log(convertedDate);
   return convertedDate;
 }
 
@@ -57,7 +68,6 @@ async function getConsultasById(patientId) {
 export const addPacient = async (req, res) => {
   const { firstName, lastName, email, dni, cell, ocupacion } = req.body;
   const validateReturn = validatePacient(req.body);
-  console.log(ocupacion);
   if (validateReturn != true) {
     return res.status(400).json({ msg: { validateReturn } });
   }
@@ -112,7 +122,6 @@ export const validatePacient = (pacient) => {
 };
 
 export const getPacientsById = async (req, res) => {
-  console.log("entre");
   const { id } = req.params;
   res.send(id);
 };
