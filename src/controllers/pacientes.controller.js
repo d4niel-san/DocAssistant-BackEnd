@@ -12,31 +12,13 @@ export const getPaciente = async (req, res) => {
   const query = queries.getPatientBy + filter + " = '" + data + "'";
   const result = await pool.request().query(query);
   const consultas = await getConsultasById(result.recordset[0].Id);
-
-  console.log("Los resultados devueltos son: ", consultas);
   consultas.forEach((element) => {
     element.date = obtenerFecha(element.date);
   });
-  res.send({ ...result.recordset[0], consultas });
+  const paciente = { ...result.recordset[0], consultas };
+  // console.log(paciente);
+  res.send(paciente);
 };
-
-/* function filtrarConsultas(consultas) {
-  let consultasFiltradas = [];
-
-  consultas.forEach((element) => {
-    if (!element.payed) {
-      consultasFiltradas.push(element);
-      consultas.splice(consultas.indexOf(element), 1); //unshift de consultas
-    }
-  });
-
-  for (let i = consultas.length; i >= 0; i--) {
-    if (consultasFiltradas.length < 4 && consultas[i])
-      consultasFiltradas.unshift(consultas[i]);
-  }
-
-  return consultasFiltradas;
-} */
 
 export function obtenerFecha(fecha) {
   const date = new Date(fecha);
