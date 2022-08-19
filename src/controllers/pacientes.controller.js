@@ -1,4 +1,5 @@
 import { getConection, sql, queries } from "../database";
+import { getConsultasById } from "./consultas.controller";
 
 export const getPacientes = async (req, res) => {
   const pool = await getConection();
@@ -16,7 +17,6 @@ export const getPaciente = async (req, res) => {
     element.date = obtenerFecha(element.date);
   });
   const paciente = { ...result.recordset[0], consultas };
-  // console.log(paciente);
   res.send(paciente);
 };
 
@@ -35,17 +35,13 @@ export function obtenerFecha(fecha) {
   if (hour < 10) hour = "0" + hour;
   if (minutes < 10) minutes = "0" + minutes;
   if (month < 10) month = "0" + month;
-  const convertedDate =
-    day + "/" + month + "/" + year + " - " + hour + ":" + minutes;
-  return convertedDate;
+  const dia = day + "/" + month + "/" + (year-2000);
+  /* const hora = hour + ":" + minutes;
+  const convertedDate = dia + " - " + hora;
+   */return dia;
 }
 
-async function getConsultasById(patientId) {
-  const pool = await getConection();
-  const query = queries.getConsultaById + "'" + patientId + "'";
-  const result = await pool.request().query(query);
-  return result.recordset;
-}
+
 
 export const addPacient = async (req, res) => {
   const { firstName, lastName, email, dni, cell, ocupacion } = req.body;

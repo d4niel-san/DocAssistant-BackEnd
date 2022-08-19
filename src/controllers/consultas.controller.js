@@ -1,9 +1,8 @@
 import { getConection, queries } from "../database";
 
-export const getConsultasById = async (req, res) => {
-  const { patientId } = req.body;
+export async function getConsultasById(patientId) {
   const pool = await getConection();
   const query = queries.getConsultaById + "'" + patientId + "'";
   const result = await pool.request().query(query);
-  res.send(result.recordset);
-};
+  return result.recordset;
+}
