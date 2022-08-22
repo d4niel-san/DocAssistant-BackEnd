@@ -17,8 +17,31 @@ export const getPaciente = async (req, res) => {
     element.date = obtenerFecha(element.date);
   });
   const paciente = { ...result.recordset[0], consultas };
+  paciente.DNI = formatDNI(paciente.DNI);
+  paciente.Cell = formatCell(paciente.Cell);
+  paciente.Id = formatId(paciente.Id);
   res.send(paciente);
 };
+
+function formatId(id) {
+  let cant = id.toString().length;
+  for (let i = cant; i < 6; i++) {
+    id = "0" + id;
+  }
+  return id
+}
+
+function formatCell(unformattedCell) {
+  let cell = unformattedCell.toString();
+  cell = cell.slice(0, 2) + "-" + cell.slice(2, 6) + "-" + cell.slice(6);
+  return cell;
+}
+
+function formatDNI(unformattedDNI) {
+  let dni = unformattedDNI.toString();
+  dni = dni.slice(0, 2) + "." + dni.slice(2, 5) + "." + dni.slice(5, 8);
+  return dni;
+}
 
 export function obtenerFecha(fecha) {
   const date = new Date(fecha);
@@ -35,13 +58,11 @@ export function obtenerFecha(fecha) {
   if (hour < 10) hour = "0" + hour;
   if (minutes < 10) minutes = "0" + minutes;
   if (month < 10) month = "0" + month;
-  const dia = day + "/" + month + "/" + (year-2000);
+  const dia = day + "/" + month + "/" + (year - 2000);
   /* const hora = hour + ":" + minutes;
   const convertedDate = dia + " - " + hora;
-   */return dia;
+   */ return dia;
 }
-
-
 
 export const addPacient = async (req, res) => {
   const { firstName, lastName, email, dni, cell, ocupacion } = req.body;
