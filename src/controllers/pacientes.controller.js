@@ -28,7 +28,7 @@ function formatId(id) {
   for (let i = cant; i < 6; i++) {
     id = "0" + id;
   }
-  return id
+  return id;
 }
 
 function formatCell(unformattedCell) {
@@ -58,6 +58,7 @@ export function obtenerFecha(fecha) {
   if (hour < 10) hour = "0" + hour;
   if (minutes < 10) minutes = "0" + minutes;
   if (month < 10) month = "0" + month;
+  if (day < 10) day = "0" + day;
   const dia = day + "/" + month + "/" + (year - 2000);
   /* const hora = hour + ":" + minutes;
   const convertedDate = dia + " - " + hora;
