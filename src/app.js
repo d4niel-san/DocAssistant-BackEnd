@@ -1,8 +1,7 @@
 import express from "express";
 import config from "./config";
-import { addPacient } from "./controllers/pacientes.controller";
-import pacientesRoutes from "./routes/pacientes.routes";
 import consultasRoutes from "./routes/consultas.routes";
+import pacientesRoutes from "./routes/pacientes.routes";
 
 const cors = require("cors");
 
