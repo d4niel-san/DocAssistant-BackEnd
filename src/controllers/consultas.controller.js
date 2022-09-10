@@ -11,11 +11,14 @@ export async function getConsultasById(patientId) {
 export async function cargarHistoria(req, res) {
   const { historia, id } = req.body;
   const pool = await getConection();
-
-  console.log(historia, id);
   const query = `UPDATE Consultas SET register= '${historia}' where id=${id}`;
   const result = await pool
     .request()
     .query(query)
     .then(() => res.send(true));
+}
+
+export async function pagarConsulta(req, res) {
+  const array = req.body;
+  console.log(array);
 }
