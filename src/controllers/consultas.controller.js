@@ -1,4 +1,5 @@
-import { getConection, queries } from "../database";
+import { getConection } from "../database";
+import { addPaymentQuery, queries } from "../database";
 
 export async function getConsultasById(patientId) {
   const pool = await getConection();
@@ -29,8 +30,6 @@ export async function pagarConsulta(req, res) {
 
 async function addpayment(element) {
   const pool = await getConection();
-  const query = `UPDATE Consultas SET payed= '${element.payed}' where id= ${element.Id}`;
-  //console.log(query);
+  const query = addPaymentQuery(element);
   const result = await pool.request().query(query);
-  //.then(() => res.send(true));
 }

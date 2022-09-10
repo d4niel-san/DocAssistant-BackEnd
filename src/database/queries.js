@@ -1,4 +1,4 @@
-export const queries = {
+const queries = {
   getAllPacients: "SELECT * FROM Pacientes",
   insertPacient:
     "INSERT INTO Pacientes (firstName, lastName, email, dni, cell, ocupacion) VALUES (@firstName, @lastName, @email, @dni, @cell, @ocupacion)",
@@ -9,3 +9,9 @@ export const queries = {
   getConsultaById: "SELECT * FROM Consultas WHERE patientId=",
   orderByDate: " ORDER BY date DESC;",
 };
+
+function addPaymentQuery(element) {
+  return `UPDATE Consultas SET payed= '${element.payed}' where id= ${element.Id}`;
+}
+
+export { addPaymentQuery, queries };
