@@ -20,6 +20,7 @@ export const getPaciente = async (req, res) => {
   paciente.DNI = formatDNI(paciente.DNI);
   paciente.Cell = formatCell(paciente.Cell);
   paciente.Id = formatId(paciente.Id);
+  console.log("Paciente a devolver: ", paciente);
   res.send(paciente);
 };
 
