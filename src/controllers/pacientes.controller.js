@@ -13,6 +13,7 @@ export const getPaciente = async (req, res) => {
   const query = queries.getPatientBy + filter + " = '" + data + "'";
   const result = await pool.request().query(query);
   const consultas = await getConsultasById(result.recordset[0].Id);
+  /* console.log(consultas); */
   consultas.forEach((element) => {
     element.date = obtenerFecha(element.date);
   });
@@ -20,7 +21,7 @@ export const getPaciente = async (req, res) => {
   paciente.DNI = formatDNI(paciente.DNI);
   paciente.Cell = formatCell(paciente.Cell);
   paciente.Id = formatId(paciente.Id);
-  console.log("Paciente a devolver: ", paciente);
+  /* console.log("Paciente a devolver: ", paciente); */
   res.send(paciente);
 };
 
