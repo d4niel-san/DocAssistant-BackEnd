@@ -15,10 +15,6 @@ const oAuth2Client = new google.auth.OAuth2(
 export const createToken = async (req, res) => {
   const { code } = req.body;
   const { tokens } = await oAuth2Client.getToken(code);
-  console.log(tokens);
-  console.log(tokens.refresh_token);
-  console.log(tokens.refresh_token === true);
-
   if (tokens.refresh_token !== null) {
     USER_REFRESH_TOKEN = tokens.refresh_token;
     console.log("Refresh Token actualizado: ", tokens.refresh_token);
@@ -27,22 +23,26 @@ export const createToken = async (req, res) => {
   createEvent();
 };
 
-export const createEvent = async () => {
+export const GEventConstructor = async (consulta) => {
+  const summary = `Consulta medica con ${consulta.patientName}`;
+  const description = `Enlace de videollamada: ${consulta.link}`;
+  const location = "Bs. As. Argentina";
+  const colorId = "7";
+  const start = { dateTime: new Date(consulta.dayHour) };
+  const end = { dateTime: new Date(consulta.endTime) };
+  const evento = { summary, description, location, colorId, start, end };
+  console.log("evento: ", evento);
+  createEvent(evento);
+};
+
+export const createEvent = async (event) => {
   oAuth2Client.setCredentials({ refresh_token: USER_REFRESH_TOKEN });
   const calendar = google.calendar("v3");
   const response = await calendar.events.insert({
     auth: oAuth2Client,
     calendarId: "primary",
-    requestBody: {
-      summary: "Prueba de Apidany",
-      description: "Es ist eine test",
-      location: "Bs. As. Argentina",
-      colorId: "7",
-      start: { dateTime: new Date("Sun Oct 23 2022 15:30:57 GMT-0300") },
-      end: { dateTime: new Date("Sun Oct 23 2022 17:30:57 GMT-0300") },
-    },
+    requestBody: event,
   });
-  console.log(response);
 };
 
 /*
