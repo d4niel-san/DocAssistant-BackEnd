@@ -35,9 +35,12 @@ async function addpayment(element) {
 }
 
 export async function altaConsulta(req, res) {
+  console.log(req.body);
   const pool = await getConection();
   const query = queries.insertConsulta;
-  const newConsulta = req.body;
+  const newConsulta = req.body.newConsulta;
+  const GUserLogged = req.body.GUserLogged;
+  const GUserToken = req.body.GUserToken;
   console.log(newConsulta);
   console.log(query);
   try {

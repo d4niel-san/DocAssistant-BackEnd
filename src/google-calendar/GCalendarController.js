@@ -9,8 +9,9 @@ const oAuth2Client = new OAuth2(idcliente, clientsecret);
 
 oAuth2Client.setCredentials({
   refresh_token:
-    "1//04X60gm0C95d5CgYIARAAGAQSNwF-L9Ir10q0wmxA9kE_B8s3M89H1locIN9a55W8sbMfuDslPID50_Sq3OTExLdv6puzYnifXeE",
+    "1//04Z6dQ93HDhUdCgYIARAAGAQSNwF-L9IrNP4mB_gnZ_vNWtLN4GxbTWrBFnwAADtdmMJIcDc5z_ViP7RbFnkiaoA0PuF94cb6BLs",
 });
+console.error(oAuth2Client);
 
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
