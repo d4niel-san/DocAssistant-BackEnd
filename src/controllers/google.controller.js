@@ -20,7 +20,7 @@ export const createToken = async (req, res) => {
     console.log("Refresh Token actualizado: ", tokens.refresh_token);
   }
   res.send(tokens);
-  createEvent();
+  /* createEvent(); */
 };
 
 export const GEventConstructor = async (consulta) => {
