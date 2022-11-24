@@ -31,7 +31,7 @@ export const GEventConstructor = async (consulta) => {
   const start = { dateTime: new Date(consulta.dayHour) };
   const end = { dateTime: new Date(consulta.endTime) };
   const evento = { summary, description, location, colorId, start, end };
-  console.log("evento: ", evento);
+  /* console.log("evento: ", evento); */
   createEvent(evento);
 };
 
