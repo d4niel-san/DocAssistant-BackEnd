@@ -1,4 +1,5 @@
 import { oauth2 } from "googleapis/build/src/apis/oauth2";
+import { getPacienteById } from "./pacientes.controller";
 
 const { google } = require("googleapis");
 
@@ -23,15 +24,27 @@ export const createToken = async (req, res) => {
   /* createEvent(); */
 };
 
-export const GEventConstructor = async (consulta) => {
+export const GEventConstructor = async (consulta, paciente) => {
   const summary = `Consulta medica con ${consulta.patientName}`;
   const description = `Enlace de videollamada: ${consulta.link}`;
   const location = "Bs. As. Argentina";
   const colorId = "7";
   const start = { dateTime: new Date(consulta.dayHour) };
   const end = { dateTime: new Date(consulta.endTime) };
-  const evento = { summary, description, location, colorId, start, end };
-  /* console.log("evento: ", evento); */
+  const sendUpdates = "all";
+  const attendee = { displayName: paciente[0].FirstName, email: paciente[0].Email };
+  let attendees
+  attendees = [attendee] 
+  const evento = {
+    summary,
+    description,
+    location,
+    colorId,
+    start,
+    end,
+    sendUpdates,
+    attendees,
+  };
   createEvent(evento);
 };
 
@@ -40,7 +53,8 @@ export const createEvent = async (event) => {
   const calendar = google.calendar("v3");
   const response = await calendar.events.insert({
     auth: oAuth2Client,
-    calendarId: "primary",
+    calendarId:
+      "846b2948edc69305044ca49eb9b3592ffd54629d4a95197bf611925542f4e376@group.calendar.google.com",
     requestBody: event,
   });
 };

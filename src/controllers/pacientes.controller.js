@@ -7,13 +7,19 @@ export const getPacientes = async (req, res) => {
   res.json(result.recordset);
 };
 
+export const getPacienteById = async (patientId) => {
+  const pool = await getConection();
+  const query = queries.getPatientBy + "Id" + " = '" + patientId + "'";
+  const result = await pool.request().query(query);
+  return result.recordset
+};
+
 export const getPaciente = async (req, res) => {
   const { filter, data } = req.body;
   const pool = await getConection();
   const query = queries.getPatientBy + filter + " = '" + data + "'";
   const result = await pool.request().query(query);
   const consultas = await getConsultasById(result.recordset[0].Id);
-  /* console.log(consultas); */
   consultas.forEach((element) => {
     element.date = obtenerFecha(element.date);
   });
@@ -21,7 +27,6 @@ export const getPaciente = async (req, res) => {
   paciente.DNI = formatDNI(paciente.DNI);
   paciente.Cell = formatCell(paciente.Cell);
   paciente.Id = formatId(paciente.Id);
-  /*   console.log("Paciente a devolver: ", paciente); */
   res.send(paciente);
 };
 

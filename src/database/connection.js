@@ -11,7 +11,7 @@ const dbSettings = {
   server,
   database,
   options: {
-    encrypt: true,
+    encrypt: true, 
     trustServerCertificate: true,
   },
 };

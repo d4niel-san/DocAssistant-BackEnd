@@ -1,6 +1,7 @@
 import { getConection } from "../database";
 import { addPaymentQuery, sql, queries } from "../database";
 import { GEventConstructor } from "./google.controller";
+import { getPacienteById } from "./pacientes.controller";
 
 export async function getConsultasById(patientId) {
   const pool = await getConection();
@@ -35,7 +36,6 @@ async function addpayment(element) {
 }
 
 export async function altaConsulta(req, res) {
-  console.log(req.body);
   const pool = await getConection();
   const query = queries.insertConsulta;
   const newConsulta = req.body.newConsulta;
@@ -48,7 +48,8 @@ export async function altaConsulta(req, res) {
       .input("payed", sql.Bit, newConsulta.payed)
       .input("link", sql.VarChar, newConsulta.link)
       .query(queries.insertConsulta);
-    GEventConstructor(newConsulta);
+    const paciente = await getPacienteById(newConsulta.patientId);
+    await GEventConstructor(newConsulta, paciente);
     return res.send(true);
   } catch (error) {
     res.status(500);
