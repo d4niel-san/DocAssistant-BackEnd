@@ -1,5 +1,7 @@
 import { getConection } from "../database";
 import { addPaymentQuery, sql, queries } from "../database";
+import { GEventConstructor } from "./google.controller";
+import { getPacienteById } from "./pacientes.controller";
 
 export async function getConsultasById(patientId) {
   const pool = await getConection();
@@ -21,7 +23,6 @@ export async function cargarHistoria(req, res) {
 
 export async function pagarConsulta(req, res) {
   const array = req.body;
-  /* console.log(array); */
   array.forEach((element) => {
     addpayment(element);
   });
@@ -37,9 +38,7 @@ async function addpayment(element) {
 export async function altaConsulta(req, res) {
   const pool = await getConection();
   const query = queries.insertConsulta;
-  const newConsulta = req.body;
-  console.log(newConsulta);
-  console.log(query);
+  const newConsulta = req.body.newConsulta;
   try {
     await pool
       .request()
@@ -49,12 +48,11 @@ export async function altaConsulta(req, res) {
       .input("payed", sql.Bit, newConsulta.payed)
       .input("link", sql.VarChar, newConsulta.link)
       .query(queries.insertConsulta);
+    const paciente = await getPacienteById(newConsulta.patientId);
+    await GEventConstructor(newConsulta, paciente);
     return res.send(true);
   } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 }
-
-//Front envia: 2022-09-21T10:41
-//Back recibe: 2022-02-26T10:10:00.000Z
